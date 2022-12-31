@@ -1,4 +1,7 @@
+import re
+
 def value_check(color_value): #RGB failsafe
+    color_value = int(color_value)
     if color_value < 0:
         color_value = 0
         return color_value
@@ -14,11 +17,7 @@ def value_check(color_value): #RGB failsafe
     else:
         return color_value
 
-def return_rgb(r, g, b):
-    rgb_arr = [None] * 3
-    rgb_arr[0] = r
-    rgb_arr[1] = g
-    rgb_arr[2] = b
+def rgb_arr(arr):
     temp = 0
 
     for i in range(len(rgb_arr)):
@@ -28,18 +27,27 @@ def return_rgb(r, g, b):
     return rgb_arr
 
 
-def rgb_to_hex(return_rgb):
-    hex1, hex2 = divmod(return_rgb,16) #get quotient(hex1) and remainder(hex2)
+def rgb_to_hex(rgb_arr):
+    hex1, hex2 = divmod(int(rgb_arr),16) #get quotient(hex1) and remainder(hex2)
     hex_arr = [hex1, hex2]
-    return hex_arr    
+    return hex_arr
 
-rgb_to_hex_table = {
-'0':'0', '1':'1', '2':'2', '3':'3', '4':'4', '5':'5','6':'6', '7':'7', '8':'8', '9':'9',
-'10':'A', '11':'B', '12':'C', '13':'D','14':'E', '15':'F'}
+def hex_output(arr):
+    rgb_to_hex_table = {
+    '0':'0', '1':'1', '2':'2', '3':'3', '4':'4', '5':'5','6':'6', '7':'7', '8':'8', '9':'9',
+    '10':'A', '11':'B', '12':'C', '13':'D','14':'E', '15':'F'}
 
-print(f"#{rgb_to_hex_table[str(rgb_to_hex(return_rgb(35, 177, 95)[0])[0])]}\
-{rgb_to_hex_table[str(rgb_to_hex(return_rgb(35, 177, 95)[0])[1])]}\
-{rgb_to_hex_table[str(rgb_to_hex(return_rgb(35, 177, 95)[1])[0])]}\
-{rgb_to_hex_table[str(rgb_to_hex(return_rgb(35, 177, 95)[1])[1])]}\
-{rgb_to_hex_table[str(rgb_to_hex(return_rgb(35, 177, 95)[2])[0])]}\
-{rgb_to_hex_table[str(rgb_to_hex(return_rgb(35, 177, 95)[2])[1])]}")
+    output = ""
+    for i in range(3):
+        for i2 in range(2):
+            key = str(rgb_to_hex(rgb_arr[i])[i2])
+            output += rgb_to_hex_table.get(key)
+            key = ''
+        i2 = 0
+    
+    return '#' + output
+
+
+rgb_str = str(input("Enter RGB values divided either by comma or space: "))
+rgb_arr = re.split(r'[, ]+', rgb_str) #" r'[, ]'+ " contains delimiters for splitting the input string,comma and space
+print(f"Converted value {hex_output(rgb_arr)}")
