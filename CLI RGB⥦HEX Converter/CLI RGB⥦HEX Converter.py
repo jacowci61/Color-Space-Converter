@@ -4,6 +4,7 @@ def ErrorHandling():
     print(" Incorrect input data. Please try again.")
     InputString = ''
     InputString = str(input("\n Enter correct color value: "))
+    
     return print(f"\n Converted value: {DefineInputColorType(InputString)}")
     
     
@@ -27,9 +28,10 @@ def RGBArray(Array):
 def RGBValue_to_HEXValue(RGBArray):
     hex1, hex2 = divmod(int(RGBArray),16) #get quotient(hex1) and remainder(hex2)
     Array = [hex1, hex2]
+    
     return Array
 
-def HEXOutput(InputString):
+def RGBtoHEX(InputString):
     RGBtoHEX_table = {
     '0':'0', '1':'1', '2':'2', '3':'3', '4':'4', '5':'5','6':'6', '7':'7', '8':'8', '9':'9',
     '10':'A', '11':'B', '12':'C', '13':'D','14':'E', '15':'F'}
@@ -37,6 +39,7 @@ def HEXOutput(InputString):
     RGBArray = re.split(r'[, ]+', InputString) #"r'[, ]'+" contains delimiters for splitting the input string,comma and space
     if len(RGBArray) < 3:
         ErrorHandling()
+        
     ConvertedColor = ""
     for i in range(3):
         RGB_ValuesCheck(int(RGBArray[i]))
@@ -46,9 +49,12 @@ def HEXOutput(InputString):
             key = ''
         i2 = 0
     
-    return '#' + ConvertedColor
+    return '#' + ConvertedColor + " in HEX"
 
-def RGBOutput(InputString):
+def HEXtoRGB(InputString):
+    if len(InputString) != 6:
+        ErrorHandling()
+        
     ConvertedColor = ""
     
     if InputString[0] == '#':
@@ -63,7 +69,7 @@ def RGBOutput(InputString):
     BlueInDecimal = int(BlueInHexidecimal,16)    
     ConvertedColor = str(RedInDecimal) + " " + str(GreenInDecimal) + " " + str(BlueInDecimal)
     
-    return ConvertedColor
+    return ConvertedColor + " in RGB"
 
 def DefineInputColorType(InputString): #could be optimised to avoid too many if's?
     try:
@@ -71,16 +77,16 @@ def DefineInputColorType(InputString): #could be optimised to avoid too many if'
         for i in range(len(InputString)):
             if InputString[i].isalpha():
                 CharCounter += 1
+                return HEXtoRGB(InputString)
                 break
             elif InputString[i] == ' ':
-                return HEXOutput(InputString)
+                return RGBtoHEX(InputString)
                 break
             else:
                 continue
-        if CharCounter == 0:
-            return HEXOutput(InputString)
-        elif CharCounter != 0:
-            return RGBOutput(InputString)
+            if CharCounter == 0:
+                return RGBtoHEX(InputString)
+                break
     except:
         ErrorHandling()
 
