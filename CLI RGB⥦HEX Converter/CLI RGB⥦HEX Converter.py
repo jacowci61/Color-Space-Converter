@@ -1,5 +1,20 @@
 import re
 
+def ErrorHandling():
+    print(" Incorrect input data. Please try again.")
+    InputString = ''
+    InputString = str(input("\n Enter correct color value: "))
+    return print(f"\n Converted value: {DefineInputColorType(InputString)}")
+    
+    
+def  RGB_ValuesCheck(RGBValue):
+    if RGBValue < 0:
+       ErrorHandling()
+        
+    elif RGBValue > 255:
+        ErrorHandling()
+        
+
 def RGBArray(Array):
     temp = 0
 
@@ -20,8 +35,11 @@ def HEXOutput(InputString):
     '10':'A', '11':'B', '12':'C', '13':'D','14':'E', '15':'F'}
 
     RGBArray = re.split(r'[, ]+', InputString) #"r'[, ]'+" contains delimiters for splitting the input string,comma and space
+    if len(RGBArray) < 3:
+        ErrorHandling()
     ConvertedColor = ""
     for i in range(3):
+        RGB_ValuesCheck(int(RGBArray[i]))
         for i2 in range(2):
             key = str(RGBValue_to_HEXValue(RGBArray[i])[i2])
             ConvertedColor += RGBtoHEX_table.get(key)
@@ -47,19 +65,25 @@ def RGBOutput(InputString):
     
     return ConvertedColor
 
-def DefineInputColorType(InputString):
-    CharCounter = 0
-    for i in range(len(InputString)):
-        if InputString[i].isalpha() or InputString[i] != ' ':
-            CharCounter += 1
-            break
-        else:
-            continue
-    if CharCounter == 0:
-        return HEXOutput(InputString)
-    elif CharCounter != 0:
-        return RGBOutput(InputString)
+def DefineInputColorType(InputString): #could be optimised to avoid too many if's?
+    try:
+        CharCounter = 0
+        for i in range(len(InputString)):
+            if InputString[i].isalpha():
+                CharCounter += 1
+                break
+            elif InputString[i] == ' ':
+                return HEXOutput(InputString)
+                break
+            else:
+                continue
+        if CharCounter == 0:
+            return HEXOutput(InputString)
+        elif CharCounter != 0:
+            return RGBOutput(InputString)
+    except:
+        ErrorHandling()
 
 print(" Note: if you're entering RGB value, please separate each color channel by either comma or space.")
 InputString = str(input("\n Enter color value: ")) #auto define color type by 'if str has char than hex to rgb'
-print(f"\n Converted value {DefineInputColorType(InputString)}")
+print(f"\n Converted value: {DefineInputColorType(InputString)}")
