@@ -50,7 +50,7 @@ def RGBOutput(InputString):
 def DefineInputColorType(InputString):
     CharCounter = 0
     for i in range(len(InputString)):
-        if InputString[i].isalpha():
+        if InputString[i].isalpha() or InputString[i] != ' ':
             CharCounter += 1
             break
         else:
